@@ -58,6 +58,10 @@ version = "^0.2"
 version = "^0.4"
 features = ["serde", "clock"]
 
+[dependencies.diesel]
+version = "^2.1"
+features = ["sqlite"]
+
 [dev-dependencies.tokio]
 version = "~1"
 features = ["macros"]

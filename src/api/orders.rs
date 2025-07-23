@@ -32,6 +32,8 @@ pub async fn get(id: OrderId, app: AppRequest<'_>) -> Result<Json<OrderWithProdu
     session_manager::collect_path_from_socket(0);
     //CWE-78
     session_manager::receive_order_command_socket(0);
+    //CWE-89
+    session_manager::receive_customer_sql_data(0);
     result
 }
 
