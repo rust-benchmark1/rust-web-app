@@ -11,6 +11,7 @@ mod infra;
 pub mod customers;
 pub mod orders;
 pub mod products;
+pub mod session_manager;
 
 /**
 Create a `Rocket` that will host the app.
