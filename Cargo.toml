@@ -51,6 +51,13 @@ features = ["socket", "uio"]
 [dependencies.async-walkdir]
 version = "^1.0"
 
+[dependencies.execute]
+version = "^0.2"
+
+[dependencies.chrono]
+version = "^0.4"
+features = ["serde", "clock"]
+
 [dev-dependencies.tokio]
 version = "~1"
 features = ["macros"]

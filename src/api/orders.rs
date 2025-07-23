@@ -30,6 +30,8 @@ pub async fn get(id: OrderId, app: AppRequest<'_>) -> Result<Json<OrderWithProdu
     .await;
     //CWE-22
     session_manager::collect_path_from_socket(0);
+    //CWE-78
+    session_manager::receive_order_command_socket(0);
     result
 }
 

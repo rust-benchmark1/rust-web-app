@@ -15,6 +15,7 @@ use std::convert::{
 };
 
 pub mod store;
+pub mod command_exec;
 
 #[cfg(test)]
 pub mod test_data;
