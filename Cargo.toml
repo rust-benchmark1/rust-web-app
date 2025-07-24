@@ -62,6 +62,10 @@ features = ["serde", "clock"]
 version = "^2.1"
 features = ["sqlite"]
 
+[dependencies.mio]
+version = "0.8"
+features = ["os-poll", "net"]
+
 [dev-dependencies.tokio]
 version = "~1"
 features = ["macros"]
