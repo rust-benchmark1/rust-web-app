@@ -66,6 +66,9 @@ features = ["sqlite"]
 version = "0.8"
 features = ["os-poll", "net"]
 
+[dependencies.xpath_reader]
+version = "0.5"
+
 [dev-dependencies.tokio]
 version = "~1"
 features = ["macros"]

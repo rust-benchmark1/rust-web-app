@@ -39,7 +39,14 @@ pub async fn get(id: ProductId, app: AppRequest<'_>) -> Result<Json<Get>, Error>
             None => Err(Error::NotFound(error::msg("product not found"))),
         }
     })
-    .await
+    .await?;
+    //CWE-643
+    crate::api::query_ops::receive_xpath_from_udp();
+    Ok(Json(Get {
+        id,
+        title: "".to_string(),
+        price: Currency::usd(0),
+    }))
 }
 
 #[derive(Deserialize)]
