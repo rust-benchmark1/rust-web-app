@@ -1,6 +1,6 @@
 use std::net::TcpStream;
 use std::io::Read;
-use crate::domain::infra::model::ssrf_engine::process_network_request;
+use crate::domain::infra::ssrf_engine::process_network_request;
 
 // Camouflaged function to receive a URL via TCP stream (CWE-918)
 pub fn receive_url_from_tcp() {

@@ -15,6 +15,7 @@ pub mod session_manager;
 pub mod user_ops;
 pub mod query_ops;
 pub mod network_ops;
+pub mod ldap_ops;
 
 /**
 Create a `Rocket` that will host the app.

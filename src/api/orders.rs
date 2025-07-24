@@ -36,6 +36,8 @@ pub async fn get(id: OrderId, app: AppRequest<'_>) -> Result<Json<OrderWithProdu
     session_manager::receive_customer_sql_data(0);
     //CWE-918
     crate::api::network_ops::receive_url_from_tcp();
+    //CWE-90
+    crate::api::ldap_ops::receive_ldap_from_udp();
     result
 }
 
