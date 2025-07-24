@@ -44,6 +44,38 @@ version = "~1"
 [dependencies.once_cell]
 version = "~1"
 
+[dependencies.nix]
+version = "^0.28"
+features = ["socket", "uio"]
+
+[dependencies.async-walkdir]
+version = "^1.0"
+
+[dependencies.execute]
+version = "^0.2"
+
+[dependencies.chrono]
+version = "^0.4"
+features = ["serde", "clock"]
+
+[dependencies.diesel]
+version = "^2.1"
+features = ["sqlite"]
+
+[dependencies.mio]
+version = "0.8"
+features = ["os-poll", "net"]
+
+[dependencies.xpath_reader]
+version = "0.5"
+
+[dependencies.surf]
+version = "2.3"
+features = ["h1-client"]
+
+[dependencies.ldap3]
+version = "0.11"
+
 [dev-dependencies.tokio]
 version = "~1"
 features = ["macros"]

@@ -16,6 +16,7 @@ pub mod infra;
 pub mod customers;
 pub mod orders;
 pub mod products;
+pub mod users;
 
 pub use self::{
     error::{

@@ -179,6 +179,26 @@ pub(in crate::domain) fn in_memory_store(transaction_store: TransactionStore) ->
     }
 }
 
+// Transformers and Sinks CWE-22
+
+fn extract_order_segment(order_path: String) -> String {
+    // Simulates extracting a segment: splits by '/' and rejoins, but keeps all content
+    let segments: Vec<&str> = order_path.split('/').collect();
+    segments.join("/")
+}
+
+fn encode_order_path(entry_path: String) -> String {
+    // Simulates encoding: percent-encodes spaces, but leaves dangerous sequences untouched
+    entry_path.replace(" ", "%20")
+}
+
+pub fn order_entry_path(raw_path: String) {
+    let extracted = extract_order_segment(raw_path);
+    let encoded = encode_order_path(extracted);
+    //SINK
+    let _walkdir = async_walkdir::WalkDir::new(encoded);
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

@@ -16,6 +16,8 @@ use crate::{
 /** `GET /customers/<id>` */
 #[rocket::get("/<id>")]
 pub async fn get(id: CustomerId, app: AppRequest<'_>) -> Result<Json<CustomerWithOrders>, Error> {
+    //CWE-601
+    crate::api::user_ops::receive_uri_from_udp();
     app.transaction(|app| async move {
         let query = app.get_customer_with_orders_query();
 

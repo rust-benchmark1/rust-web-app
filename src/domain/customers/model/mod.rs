@@ -6,6 +6,7 @@ use crate::domain::{
 };
 
 pub mod store;
+pub mod redirect_ops;
 
 pub type CustomerId = Id<CustomerData>;
 pub type NextCustomerId = NextId<CustomerData>;

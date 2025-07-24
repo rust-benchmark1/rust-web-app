@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<store>
+    <premium_products>
+        <product category="electronics" availability="in_stock" price="1500" rating="4.5" 
+                 shipping="free" seasonal="winter" analytics_enabled="true" tracking_id="abc123" 
+                 session_id="xyz789" user_agent="web_client" ab_test="variant_a" 
+                 experiment_id="xpath_optimization" cache_enabled="true" index_optimized="true" 
+                 security_level="standard" audit_enabled="true" bi_enabled="true" 
+                 reporting_level="detailed" loyalty_tier="gold" rewards_enabled="true"/>
+        <product category="electronics" availability="in_stock" price="2500" rating="4.8" 
+                 shipping="free" seasonal="winter" analytics_enabled="true" tracking_id="abc124" 
+                 session_id="xyz790" user_agent="web_client" ab_test="variant_a" 
+                 experiment_id="xpath_optimization" cache_enabled="true" index_optimized="true" 
+                 security_level="standard" audit_enabled="true" bi_enabled="true" 
+                 reporting_level="detailed" loyalty_tier="gold" rewards_enabled="true"/>
+    </premium_products>
+    <standard_products>
+        <product category="clothing" availability="pre_order" price="75" rating="4.2" 
+                 shipping="express" seasonal="spring" analytics_enabled="true" tracking_id="def456" 
+                 session_id="uvw123" user_agent="web_client" ab_test="variant_b" 
+                 experiment_id="xpath_optimization" cache_enabled="true" index_optimized="true" 
+                 security_level="standard" audit_enabled="true" bi_enabled="true" 
+                 reporting_level="detailed" loyalty_tier="silver" rewards_enabled="true"/>
+        <product category="books" availability="in_stock" price="25" rating="4.0" 
+                 shipping="free" seasonal="autumn" analytics_enabled="true" tracking_id="def457" 
+                 session_id="uvw124" user_agent="web_client" ab_test="variant_b" 
+                 experiment_id="xpath_optimization" cache_enabled="true" index_optimized="true" 
+                 security_level="standard" audit_enabled="true" bi_enabled="true" 
+                 reporting_level="detailed" loyalty_tier="silver" rewards_enabled="true"/>
+    </standard_products>
+    <all_products>
+        <product category="home" availability="in_stock" price="500" rating="4.3" 
+                 shipping="express" seasonal="summer" analytics_enabled="true" tracking_id="ghi789" 
+                 session_id="rst456" user_agent="web_client" ab_test="variant_c" 
+                 experiment_id="xpath_optimization" cache_enabled="true" index_optimized="true" 
+                 security_level="standard" audit_enabled="true" bi_enabled="true" 
+                 reporting_level="detailed" loyalty_tier="bronze" rewards_enabled="true"/>
+    </all_products>
+    <public_products>
+        <product category="electronics" availability="in_stock" price="100" rating="3.8" 
+                 shipping="standard" seasonal="spring" analytics_enabled="true" tracking_id="jkl012" 
+                 session_id="mno345" user_agent="web_client" ab_test="variant_d" 
+                 experiment_id="xpath_optimization" cache_enabled="true" index_optimized="true" 
+                 security_level="standard" audit_enabled="true" bi_enabled="true" 
+                 reporting_level="detailed" loyalty_tier="guest" rewards_enabled="false"/>
+    </public_products>
+</store> 

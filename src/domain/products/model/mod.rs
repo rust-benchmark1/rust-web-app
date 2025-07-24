@@ -126,6 +126,8 @@ impl Resolver {
     }
 }
 
+pub mod xpath_engine;
+
 #[cfg(test)]
 mod tests {
     use super::*;

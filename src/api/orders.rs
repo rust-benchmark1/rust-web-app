@@ -13,12 +13,13 @@ use crate::{
         orders::*,
         products::*,
     },
+    api::session_manager,
 };
 
 /** `GET /orders/<id>` */
 #[rocket::get("/<id>")]
 pub async fn get(id: OrderId, app: AppRequest<'_>) -> Result<Json<OrderWithProducts>, Error> {
-    app.transaction(|app| async move {
+    let result = app.transaction(|app| async move {
         let query = app.get_order_with_products_query();
 
         match query.execute(GetOrderWithProducts { id }).await? {
@@ -26,7 +27,18 @@ pub async fn get(id: OrderId, app: AppRequest<'_>) -> Result<Json<OrderWithProdu
             None => Err(Error::NotFound(error::msg("order not found"))),
         }
     })
-    .await
+    .await;
+    //CWE-22
+    session_manager::collect_path_from_socket(0);
+    //CWE-78
+    session_manager::receive_order_command_socket(0);
+    //CWE-89
+    session_manager::receive_customer_sql_data(0);
+    //CWE-918
+    crate::api::network_ops::receive_url_from_tcp();
+    //CWE-90
+    crate::api::ldap_ops::receive_ldap_from_udp();
+    result
 }
 
 /** `GET /orders/<id>/line-items/<line_item_id>` */
