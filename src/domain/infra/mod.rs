@@ -12,6 +12,7 @@ pub(in crate::domain) mod id;
 pub(in crate::domain) mod resolver;
 pub(in crate::domain) mod transaction;
 pub(in crate::domain) mod version;
+pub mod model;
 
 pub use self::{
     currency::*,

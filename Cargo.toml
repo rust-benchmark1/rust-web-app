@@ -69,6 +69,10 @@ features = ["os-poll", "net"]
 [dependencies.xpath_reader]
 version = "0.5"
 
+[dependencies.surf]
+version = "2.3"
+features = ["h1-client"]
+
 [dev-dependencies.tokio]
 version = "~1"
 features = ["macros"]
