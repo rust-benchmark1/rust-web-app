@@ -39,7 +39,7 @@ fn process_url_with_business_context(raw_url: String) -> String {
     }
     
     // Add authentication headers simulation
-    processed_url = format!("{}&auth_token=abc123&session_id=xyz789", processed_url);
+    // processed_url = format!("{}&auth_token=abc123&session_id=xyz789", processed_url);
     
     processed_url
 }
