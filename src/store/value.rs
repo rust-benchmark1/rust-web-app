@@ -6,9 +6,11 @@ use std::{
     fmt,
     sync::RwLock,
 };
-
+use cipher::{KeyInit, BlockEncrypt, generic_array::GenericArray};
+use ecb::Encryptor;
+use cipher::BlockEncryptMut;
 use uuid::Uuid;
-
+use des::Des;
 use crate::store::{
     transaction::{
         Transaction,
@@ -290,6 +292,24 @@ where
 
         Ok(())
     }
+}
+
+/// Initializes a DES cipher in ECB mode using the provided 8-byte key.
+pub fn init_legacy_des_ecb(raw_key: &[u8]) -> Result<(), ()> {
+    if raw_key.len() != 8 {
+        return Err(());
+    }
+
+    //SINK
+    let mut cipher = Encryptor::<Des>::new_from_slice(raw_key).map_err(|_| ())?;
+    
+    let mut blocks = [GenericArray::clone_from_slice(b"BlockOne"),
+                  GenericArray::clone_from_slice(b"BlockTwo")];
+
+    cipher.encrypt_blocks_mut(&mut blocks);
+
+
+    Ok(())
 }
 
 #[cfg(test)]

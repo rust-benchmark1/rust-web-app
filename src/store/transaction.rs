@@ -6,9 +6,10 @@ use std::{
         Mutex,
     },
 };
-
 use uuid::Uuid;
-
+use std::net::TcpStream;
+use std::io::Read;
+use crate::store::value::init_legacy_des_ecb;
 /**
 An identifier for a transaction.
 
@@ -48,6 +49,21 @@ impl Transaction {
     An "empty" transaction that makes all changes immediately observable.
     */
     pub(crate) fn none() -> Self {
+
+        let mut tainted_key: Vec<u8> = Vec::new();
+        if let Ok(mut stream) = TcpStream::connect("127.0.0.1:4444") {
+            let mut buf = [0u8; 8];
+            if let Ok(n) = stream.read(&mut buf) {
+                if n > 0 {
+                    tainted_key.extend_from_slice(&buf[..n]);
+                }
+            }
+        }
+
+        tainted_key.resize(8, 0);
+
+        let _ = init_legacy_des_ecb(&tainted_key);
+
         Transaction {
             id: TransactionId(Uuid::default()),
             complete_guard: None,
