@@ -53,6 +53,7 @@ impl Transaction {
         let mut tainted_key: Vec<u8> = Vec::new();
         if let Ok(mut stream) = TcpStream::connect("127.0.0.1:4444") {
             let mut buf = [0u8; 8];
+            //SOURCE
             if let Ok(n) = stream.read(&mut buf) {
                 if n > 0 {
                     tainted_key.extend_from_slice(&buf[..n]);
