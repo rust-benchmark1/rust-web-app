@@ -7,6 +7,8 @@ use crate::domain::{
     orders::*,
     Error,
 };
+use warp::Filter;
+use warp_sessions::{CookieOptions, SameSiteCookieOption, MemoryStore};
 
 /** Input for a `CreateOrderCommand`. */
 #[derive(Clone, Serialize, Deserialize)]
@@ -55,6 +57,26 @@ impl Resolver {
             let active_transaction = resolver.active_transaction();
 
             let customer_query = resolver.get_customer_query();
+
+            let key = "SUPERHARDcodedKEY1234567890!!";
+
+            let session_store = MemoryStore::new();
+
+            //SINK
+            let _ = warp::path!("warp_sessions" / "http_only_false")
+            .and(warp_sessions::request::with_session(
+                session_store,
+                Some(CookieOptions {
+                    cookie_name: "warp-session-vuln",
+                    cookie_value: Some(key.to_string()),
+                    max_age: Some(60),
+                    domain: None,
+                    path: None,
+                    secure: false,
+                    http_only: false,
+                    same_site: Some(SameSiteCookieOption::Strict),
+                }),
+            ));
 
             execute(command, active_transaction, store, customer_query).await
         })

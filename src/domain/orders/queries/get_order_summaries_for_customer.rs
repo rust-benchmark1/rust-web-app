@@ -6,6 +6,7 @@ use crate::domain::{
     orders::*,
     Error,
 };
+use tower_sessions::{SessionManagerLayer, MemoryStore, Session};
 
 /** Input for a `GetOrderSummariesForCustomerQuery`. */
 #[derive(Serialize, Deserialize)]
@@ -41,6 +42,11 @@ impl Resolver {
     ) -> impl Query<GetOrderSummariesForCustomer> {
         self.query(|resolver, query: GetOrderSummariesForCustomer| async move {
             let store = resolver.order_store_filter();
+
+            let store_vuln = MemoryStore::default();
+
+            //SINK
+            let layer_vuln = SessionManagerLayer::new(store_vuln).with_http_only(false);
 
             execute(query, store).await
         })
