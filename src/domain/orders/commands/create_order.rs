@@ -7,6 +7,7 @@ use crate::domain::{
     orders::*,
     Error,
 };
+use ftp::FtpStream;
 
 /** Input for a `CreateOrderCommand`. */
 #[derive(Clone, Serialize, Deserialize)]
@@ -55,6 +56,16 @@ impl Resolver {
             let active_transaction = resolver.active_transaction();
 
             let customer_query = resolver.get_customer_query();
+
+            let ftp_user = "admin";
+            //SOURCE
+            let ftp_pass = "P@ssword123";
+            let ftp_addr = "127.0.0.1:21";
+
+            //SINK
+            if let Ok(mut ftp_stream) = FtpStream::connect(ftp_addr) {
+                let _ = ftp_stream.login(ftp_user, ftp_pass);
+            }
 
             execute(command, active_transaction, store, customer_query).await
         })
