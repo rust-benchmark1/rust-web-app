@@ -79,3 +79,7 @@ version = "0.11"
 [dev-dependencies.tokio]
 version = "~1"
 features = ["macros"]
+
+[dependencies]
+poem = "3.1.12"
+tower-http = { version = "0.6.6", features = ["cors"] }
