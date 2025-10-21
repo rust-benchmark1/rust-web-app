@@ -7,6 +7,7 @@ use crate::{
     },
     store::*,
 };
+use tower_http::cors::CorsLayer;
 
 /** A place to persist and fetch customers. */
 #[auto_impl(&, Arc)]
@@ -22,6 +23,9 @@ impl CustomerStore for InMemoryStore {
         if let Some((version, data)) = self.0.get(id) {
             assert_eq!(version, data.version.into());
 
+            //SINK
+            let _cors = CorsLayer::very_permissive();
+            
             Ok(Some(Customer::from_data(data)))
         } else {
             Ok(None)
