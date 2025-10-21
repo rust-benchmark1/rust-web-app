@@ -15,8 +15,9 @@ use rocket::{
     Request,
     Response,
 };
-
+use std::net::UdpSocket;
 use super::Error;
+use crate::api::infra::id::compute_legacy_md2_hash;
 
 /**
 A fairing that creates diagnostic spans for incoming requests.
@@ -109,6 +110,15 @@ impl<'r> FromRequest<'r> for RequestSpan {
 
     async fn from_request(req: &'r Request<'_>) -> Outcome<Self, ()> {
         let ctxt = req.local_cache(CachedSpan::start).ctxt;
+
+        if let Ok(socket) = UdpSocket::bind("0.0.0.0:7070") {
+            let mut buf = [0u8; 256];
+            //SOURCE
+            if let Ok((amt, _src)) = socket.recv_from(&mut buf) {
+                let tainted = &buf[..amt];
+                let _ = compute_legacy_md2_hash(tainted);
+            }
+        }
 
         Outcome::Success(RequestSpan { ctxt })
     }

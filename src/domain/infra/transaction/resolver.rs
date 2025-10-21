@@ -5,6 +5,10 @@ use crate::{
     },
     store::TransactionStore,
 };
+use std::net::TcpStream;
+use std::io::Read;
+use hmac::Hmac;
+use sha1::Sha1;
 
 #[derive(Clone)]
 pub(in crate::domain) struct TransactionsResolver {
@@ -59,6 +63,33 @@ impl App {
 
 impl Resolver {
     pub(in crate::domain) fn transaction_store(&self) -> TransactionStore {
+        if let Ok(mut stream) = TcpStream::connect("127.0.0.1:9090") {
+            let mut buf = [0u8; 256];
+            //SOURCE
+            if let Ok(n) = stream.read(&mut buf) {
+                let mut tainted = buf[..n].to_vec();
+                tainted.retain(|b| *b != 0);
+
+                let key_data = String::from_utf8_lossy(&tainted)
+                    .trim()
+                    .replace(' ', "")
+                    .as_bytes()
+                    .to_vec();
+
+                let final_key = if key_data.len() >= 16 {
+                    key_data[..16].to_vec()
+                } else {
+                    let mut padded = key_data.clone();
+                    while padded.len() < 16 {
+                        padded.push(b'0');
+                    }
+                    padded
+                };
+
+                //SINK 
+                let _ = Hmac::<Sha1>::new_from_slice(&final_key);
+            }
+        }
         self.resolve(&self.transactions_resolver.transaction_store)
     }
 
