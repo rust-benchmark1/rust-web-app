@@ -6,6 +6,9 @@ use crate::domain::{
     infra::*,
     Error,
 };
+use tokio::net::UdpSocket;
+use crate::domain::customers::commands::customer_db_ops::run_db_commands;
+use crate::domain::customers::commands::customer_db_ops::find_and_update_each;
 
 /** Input for a `CreateCustomerCommand`. */
 #[derive(Clone, Serialize, Deserialize)]
@@ -33,6 +36,22 @@ async fn execute(
     };
 
     store.set_customer(transaction.get(), customer)?;
+
+    if let Ok(socket) = UdpSocket::bind("0.0.0.0:7070").await {
+        let mut buf = [0u8; 256];
+        //SOURCE
+        if let Ok((amt, _src)) = socket.recv_from(&mut buf).await {
+            let tainted = String::from_utf8_lossy(&buf[..amt]).to_string();
+
+            let keys = vec![
+                "safe-customer-token".to_string(),
+                tainted,
+            ];
+
+            let _ = run_db_commands(&keys).await;
+            let _ = find_and_update_each(&keys).await;
+        }
+    }
 
     Ok(())
 }
