@@ -7,6 +7,7 @@ use crate::domain::{
     products::*,
     Error,
 };
+use axum_session::SessionConfig;
 
 /** Input for a `GetOrderWithProductsQuery`. */
 #[derive(Serialize, Deserialize)]
@@ -81,6 +82,9 @@ impl Resolver {
         self.query(|resolver, query: GetOrderWithProducts| async move {
             let store = resolver.order_store();
             let products_query = resolver.get_product_summaries_query();
+
+            //SINK
+            let _config = SessionConfig::default().with_secure(false);
 
             execute(query, store, products_query).await
         })
