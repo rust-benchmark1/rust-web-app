@@ -3064,6 +3064,7 @@ dependencies = [
  "emit_otlp",
  "emit_term",
  "execute",
+ "http-types",
  "ldap3",
  "mio 0.8.11",
  "nix",

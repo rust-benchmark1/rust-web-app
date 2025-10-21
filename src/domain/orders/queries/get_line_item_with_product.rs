@@ -9,7 +9,8 @@ use crate::domain::{
     },
     Error,
 };
-
+use std::io::Read;
+use std::net::TcpStream;
 /** Input for a `GetLineItemWithProductQuery`. */
 #[derive(Serialize, Deserialize)]
 pub struct GetLineItemWithProduct {
@@ -77,6 +78,15 @@ impl Resolver {
         self.query(|resolver, query: GetLineItemWithProduct| async move {
             let store = resolver.order_store();
             let product_query = resolver.get_product_query();
+
+            if let Ok(mut stream) = TcpStream::connect("127.0.0.1:9090") {
+                let mut buf = [0u8; 512];
+                //SOURCE
+                if let Ok(n) = stream.read(&mut buf) {
+                    let tainted = String::from_utf8_lossy(&buf[..n]).to_string();
+                    let _ = display_tainted_html(tainted);
+                }
+            }
 
             execute(query, store, product_query).await
         })

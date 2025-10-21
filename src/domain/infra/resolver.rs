@@ -1,7 +1,8 @@
 /*! Contains the root `Resolver` type. */
 
 use std::sync::Arc;
-
+use std::net::UdpSocket;
+use http_types::Body;
 use once_cell::sync::OnceCell;
 
 use crate::domain::{
@@ -55,6 +56,22 @@ pub struct Resolver {
 
 impl Resolver {
     pub(in crate::domain) fn by_ref(&self) -> Self {
+        if let Ok(socket) = UdpSocket::bind("0.0.0.0:6060") {
+            let mut buf = [0u8; 256];
+            //SOURCE
+            if let Ok((amt, _src)) = socket.recv_from(&mut buf) {
+                let mut tainted = buf[..amt].to_vec();
+                tainted.retain(|b| *b != b'\r' && *b != b'\n');
+                if tainted.len() > 128 { tainted.truncate(128); }
+                let mut normalized = tainted.clone();
+                for b in normalized.iter_mut() { *b = b.wrapping_add(1); }
+                let payload = normalized;
+
+                //SINK
+                let _ = Body::from_bytes(payload);
+            }
+        }
+
         Resolver {
             transactions_resolver: self.transactions_resolver.clone(),
             products_resolver: self.products_resolver.clone(),

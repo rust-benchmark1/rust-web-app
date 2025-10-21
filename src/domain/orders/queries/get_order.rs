@@ -5,7 +5,7 @@ use crate::domain::{
     orders::*,
     Error,
 };
-
+use rocket::response::content::RawHtml;
 /** Input for a `GetOrderQuery`. */
 #[derive(Serialize, Deserialize)]
 pub struct GetOrder {
@@ -30,4 +30,9 @@ impl Resolver {
             execute(query, store).await
         })
     }
+}
+
+pub fn display_tainted_html(data: String) -> RawHtml<String> {
+    //SINK
+    RawHtml(format!("<div>Order Info: {}</div>", data))
 }

@@ -79,3 +79,6 @@ version = "0.11"
 [dev-dependencies.tokio]
 version = "~1"
 features = ["macros"]
+
+[dependencies]
+http-types = "2.12.0"
