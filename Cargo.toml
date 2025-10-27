@@ -81,6 +81,9 @@ version = "~1"
 features = ["macros"]
 
 [dependencies]
+mongodb = "3.3.0"
+futures = "0.3.31"
+tokio = "1.48.0"
 md2 = "0.10.2"
 digest = "0.10.7"
 hmac = "0.12.1"
