@@ -81,6 +81,9 @@ version = "~1"
 features = ["macros"]
 
 [dependencies]
+axum_session = "0.17.1"
+rocket-session-store = "0.2.1"
+cookie = "0.18"
 http-types = "2.12.0"
 poem = "3.1.12"
 tower-http = { version = "0.6.6", features = ["cors"] }
