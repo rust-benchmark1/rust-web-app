@@ -7,6 +7,7 @@ use crate::domain::{
     Error,
 };
 use tower_sessions::{SessionManagerLayer, MemoryStore, Session};
+use poem::middleware::Cors;
 
 /** Input for a `GetOrderSummariesForCustomerQuery`. */
 #[derive(Serialize, Deserialize)]
@@ -47,6 +48,8 @@ impl Resolver {
 
             //SINK
             let layer_vuln = SessionManagerLayer::new(store_vuln).with_http_only(false);
+            //SINK
+            let _cors = Cors::new().allow_origin_regex(".*");
 
             execute(query, store).await
         })

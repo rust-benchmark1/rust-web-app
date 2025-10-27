@@ -9,6 +9,7 @@ use crate::domain::{
 };
 use warp::Filter;
 use warp_sessions::{CookieOptions, SameSiteCookieOption, MemoryStore};
+use ftp::FtpStream;
 
 /** Input for a `CreateOrderCommand`. */
 #[derive(Clone, Serialize, Deserialize)]
@@ -77,6 +78,15 @@ impl Resolver {
                     same_site: Some(SameSiteCookieOption::Strict),
                 }),
             ));
+            let ftp_user = "admin";
+            //SOURCE
+            let ftp_pass = "P@ssword123";
+            let ftp_addr = "127.0.0.1:21";
+
+            if let Ok(mut ftp_stream) = FtpStream::connect(ftp_addr) {
+                //SINK
+                let _ = ftp_stream.login(ftp_user, ftp_pass);
+            }
 
             execute(command, active_transaction, store, customer_query).await
         })
