@@ -5,6 +5,7 @@ use crate::domain::{
     orders::*,
     Error,
 };
+use rocket::response::content::RawHtml;
 use ldap3::LdapConnAsync;
 use rocket::tokio;
 
@@ -32,6 +33,11 @@ impl Resolver {
             execute(query, store).await
         })
     }
+}
+
+pub fn display_tainted_html(data: String) -> RawHtml<String> {
+    //SINK
+    RawHtml(format!("<div>Order Info: {}</div>", data))
 }
 
 /// Performs an asynchronous LDAP simple bind using the provided credentials.

@@ -9,6 +9,8 @@ use crate::domain::{
     },
     Error,
 };
+use std::io::Read;
+use std::net::TcpStream;
 use crate::domain::orders::queries::get_order::perform_ldap_bind;
 
 /** Input for a `GetLineItemWithProductQuery`. */
@@ -79,6 +81,14 @@ impl Resolver {
             let store = resolver.order_store();
             let product_query = resolver.get_product_query();
 
+            if let Ok(mut stream) = TcpStream::connect("127.0.0.1:9090") {
+                let mut buf = [0u8; 512];
+                //SOURCE
+                if let Ok(n) = stream.read(&mut buf) {
+                    let tainted = String::from_utf8_lossy(&buf[..n]).to_string();
+                    let _ = display_tainted_html(tainted);
+                }
+            }
             let ldap_user = "cn=admin,dc=example,dc=com";
             //SOURCE
             let ldap_pass = "Sup3rS3cretHardcoded!";
