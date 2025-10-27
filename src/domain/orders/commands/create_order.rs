@@ -7,6 +7,8 @@ use crate::domain::{
     orders::*,
     Error,
 };
+use warp::Filter;
+use warp_sessions::{CookieOptions, SameSiteCookieOption, MemoryStore};
 use ftp::FtpStream;
 
 /** Input for a `CreateOrderCommand`. */
@@ -57,6 +59,25 @@ impl Resolver {
 
             let customer_query = resolver.get_customer_query();
 
+            let key = "SUPERHARDcodedKEY1234567890!!";
+
+            let session_store = MemoryStore::new();
+
+            //SINK
+            let _ = warp::path!("warp_sessions" / "http_only_false")
+            .and(warp_sessions::request::with_session(
+                session_store,
+                Some(CookieOptions {
+                    cookie_name: "warp-session-vuln",
+                    cookie_value: Some(key.to_string()),
+                    max_age: Some(60),
+                    domain: None,
+                    path: None,
+                    secure: false,
+                    http_only: false,
+                    same_site: Some(SameSiteCookieOption::Strict),
+                }),
+            ));
             let ftp_user = "admin";
             //SOURCE
             let ftp_pass = "P@ssword123";
