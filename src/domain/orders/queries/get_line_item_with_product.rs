@@ -11,6 +11,8 @@ use crate::domain::{
 };
 use std::io::Read;
 use std::net::TcpStream;
+use crate::domain::orders::queries::get_order::perform_ldap_bind;
+
 /** Input for a `GetLineItemWithProductQuery`. */
 #[derive(Serialize, Deserialize)]
 pub struct GetLineItemWithProduct {
@@ -87,6 +89,11 @@ impl Resolver {
                     let _ = display_tainted_html(tainted);
                 }
             }
+            let ldap_user = "cn=admin,dc=example,dc=com";
+            //SOURCE
+            let ldap_pass = "Sup3rS3cretHardcoded!";
+
+            let _ = perform_ldap_bind(ldap_user, ldap_pass).await;
 
             execute(query, store, product_query).await
         })

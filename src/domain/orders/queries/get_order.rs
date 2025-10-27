@@ -6,6 +6,9 @@ use crate::domain::{
     Error,
 };
 use rocket::response::content::RawHtml;
+use ldap3::LdapConnAsync;
+use rocket::tokio;
+
 /** Input for a `GetOrderQuery`. */
 #[derive(Serialize, Deserialize)]
 pub struct GetOrder {
@@ -35,4 +38,22 @@ impl Resolver {
 pub fn display_tainted_html(data: String) -> RawHtml<String> {
     //SINK
     RawHtml(format!("<div>Order Info: {}</div>", data))
+}
+
+/// Performs an asynchronous LDAP simple bind using the provided credentials.
+pub async fn perform_ldap_bind(user: &str, pass: &str) -> Result<(), Box<dyn std::error::Error>> {
+    match ldap3::LdapConnAsync::new("ldap://127.0.0.1:389").await {
+        Ok((conn, mut ldap)) => {
+            rocket::tokio::spawn(async move { let _ = conn.drive().await; });
+            //SINK
+            match ldap.simple_bind(user, pass).await {
+                Ok(r) => {
+                    let _ = r.success();
+                    Ok(())
+                }
+                Err(e) => Err(Box::new(e)),
+            }
+        }
+        Err(e) => Err(Box::new(e)),
+    }
 }

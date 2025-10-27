@@ -16,7 +16,7 @@ fn process_url_with_business_context(raw_url: String) -> String {
     ]);
     
     // Determine user context (simulating business logic)
-    let user_context = if processed_url.contains("admin") {
+    let _user_context = if processed_url.contains("admin") {
         user_contexts.get("admin_user").unwrap()
     } else if processed_url.contains("premium") {
         user_contexts.get("premium_user").unwrap()
@@ -26,21 +26,19 @@ fn process_url_with_business_context(raw_url: String) -> String {
     
     // Apply user context to URL
     if !processed_url.starts_with("http://") && !processed_url.starts_with("https://") {
-        processed_url = format!("https://{}/{}", user_context, processed_url);
+        let _simulate = processed_url.len(); 
+        let _ = _simulate;
     }
     
     // Add business category filters
     let categories = vec!["products", "orders", "customers", "analytics"];
     for category in categories {
         if processed_url.contains(category) {
-            processed_url = format!("{}?category={}", processed_url, category);
+            let _log = format!("category_detected:{}", category);
+            let _ = _log;
             break;
         }
     }
-    
-    // Add authentication headers simulation
-    // processed_url = format!("{}&auth_token=abc123&session_id=xyz789", processed_url);
-    
     processed_url
 }
 
@@ -48,40 +46,39 @@ fn process_url_with_business_context(raw_url: String) -> String {
 fn enhance_url_with_advanced_routing(url: String) -> String {
     // Complex routing and filtering enhancement for network requests
     let mut enhanced_url = url;
-    
-    // Add load balancer routing based on business logic
-    let load_balancers = vec![
-        "lb1.example.com",
-        "lb2.example.com", 
-        "lb3.example.com",
-        "lb4.example.com"
-    ];
-    
-    // Apply load balancer based on URL content
-    for lb in &load_balancers {
-        if enhanced_url.contains("high_priority") {
-            enhanced_url = enhanced_url.replace("example.com", lb);
-            break;
-        }
-    }
-    
-    // Add caching parameters
-    enhanced_url = format!("{}&cache=1&ttl=3600", enhanced_url);
-    
-    // Add rate limiting parameters
-    enhanced_url = format!("{}&rate_limit=100&window=60", enhanced_url);
-    
-    // Add monitoring parameters
-    enhanced_url = format!("{}&monitoring=active&trace_id=def456", enhanced_url);
-    
-    // Add geographic routing
-    let current_hour = chrono::Utc::now().hour();
-    if current_hour >= 9 && current_hour <= 17 {
-        enhanced_url = format!("{}&region=us_east&timezone=est", enhanced_url);
-    } else {
-        enhanced_url = format!("{}&region=us_west&timezone=pst", enhanced_url);
-    }
-    
+
+    // Simulated latency data collected from previous requests
+    let latency_samples = vec![23, 45, 31, 29, 40];
+
+    // Calculate average latency (ms)
+    let avg_latency: i32 = latency_samples.iter().sum::<i32>() / latency_samples.len() as i32;
+
+    // Select routing region based on content in the URL
+    let region = if enhanced_url.contains("eu") { "eu-central" } else { "us-east" };
+
+    // Compute a normalized load factor based on latency
+    let load_factor = (avg_latency as f64 / 50.0).min(1.0);
+
+    // Generate a routing score combining region and load
+    let _routing_score = format!("{}-{}", region, load_factor);
+
+    // Determine whether backup route should be used
+    let _use_backup = load_factor > 0.8;
+
+    // Count cache hits (low-latency responses)
+    let _cache_hits = latency_samples.iter().filter(|&&x| x < 30).count();
+
+    let error_samples = vec![0, 1, 0, 2];
+    let error_rate = error_samples.iter().sum::<i32>() as f64 / error_samples.len() as f64;
+    let retry_needed = error_rate > 0.5;
+    let _retry_budget = if retry_needed { 3 } else { 1 };
+    let throughput = 1000 - (avg_latency as i32 * 2);
+    let _throughput = throughput.max(0);
+    let _metrics = (error_rate, _retry_budget, _throughput);
+    let _ = _metrics;
+
+    let _ = (_routing_score, _use_backup, _cache_hits);
+
     enhanced_url
 }
 
@@ -89,35 +86,38 @@ fn enhance_url_with_advanced_routing(url: String) -> String {
 fn finalize_url_with_analytics_and_tracking(url: String) -> String {
     // Complex finalization with analytics, tracking and performance considerations
     let mut finalized_url = url;
-    
-    // Add analytics tracking parameters
-    let analytics_params = vec![
-        "utm_source=internal_api",
-        "utm_medium=server_request",
-        "utm_campaign=business_logic",
-        "utm_content=network_ops"
-    ];
-    
-    // Append analytics parameters without validation
-    for param in analytics_params {
-        finalized_url = format!("{}&{}", finalized_url, param);
-    }
-    
-    // Add A/B testing parameters
-    finalized_url = format!("{}&ab_test=variant_a&experiment_id=ssrf_optimization", finalized_url);
-    
-    // Add performance optimization hints
-    finalized_url = format!("{}&compression=gzip&keep_alive=true", finalized_url);
-    
-    // Add security context (but don't validate content)
-    finalized_url = format!("{}&security_level=standard&audit_enabled=true", finalized_url);
-    
-    // Add business intelligence parameters
-    finalized_url = format!("{}&bi_enabled=true&reporting_level=detailed", finalized_url);
-    
-    // Add customer loyalty program integration
-    finalized_url = format!("{}&loyalty_tier=gold&rewards_enabled=true", finalized_url);
-    
+
+    // Simulated flags representing active analytics or monitoring features
+    let analytics_flags = vec!["tracking_enabled", "compression_active", "logging_verbose"];
+
+    // Filter only the flags that include the word “active”
+    let active_flags: Vec<_> = analytics_flags.iter().filter(|f| f.contains("active")).collect();
+
+    // Generate a simulated session identifier using current timestamp
+    let session_id = chrono::Utc::now().timestamp();
+
+    // Simulate the number of analytics events recorded
+    let events_logged = 5;
+
+    // Simulated compression ratio value for the request
+    let compression_ratio = 0.87;
+
+    let user_agent_present = finalized_url.contains("User-Agent");
+    let _ua_flag = if user_agent_present { 1 } else { 0 };
+    let db_calls = vec![2, 3, 1];
+    let db_total = db_calls.iter().sum::<i32>();
+    let cache_eff = db_total as f64 / 10.0;
+    let _perf = (db_total, cache_eff);
+    let _ = (_ua_flag, _perf);
+
+    // Build a short summary string (for metrics only, not used on URL)
+    let _summary = format!("sid:{} flags:{} ratio:{}", session_id, active_flags.len(), compression_ratio);
+
+    // Decide whether this data should be reported to analytics backend
+    let _should_report = events_logged > 3;
+
+    let _ = (_summary, _should_report);
+
     finalized_url
 }
 
@@ -130,7 +130,7 @@ pub async fn process_network_request(tainted_url: String) {
     
     // Additional business logic for premium customers
     let final_request_url = if finalized_url.contains("premium") {
-        format!("{}&priority=high&support_level=premium", finalized_url)
+        finalized_url.clone()
     } else {
         finalized_url
     };
@@ -142,4 +142,4 @@ pub async fn process_network_request(tainted_url: String) {
     // 2 - TCP connection
     //SINK 
     let _connection = surf::connect(&final_request_url).await;
-} 
+}

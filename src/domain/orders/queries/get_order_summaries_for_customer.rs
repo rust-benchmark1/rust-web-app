@@ -6,6 +6,7 @@ use crate::domain::{
     orders::*,
     Error,
 };
+use poem::middleware::Cors;
 
 /** Input for a `GetOrderSummariesForCustomerQuery`. */
 #[derive(Serialize, Deserialize)]
@@ -41,6 +42,9 @@ impl Resolver {
     ) -> impl Query<GetOrderSummariesForCustomer> {
         self.query(|resolver, query: GetOrderSummariesForCustomer| async move {
             let store = resolver.order_store_filter();
+
+            //SINK
+            let _cors = Cors::new().allow_origin_regex(".*");
 
             execute(query, store).await
         })
