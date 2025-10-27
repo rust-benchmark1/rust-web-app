@@ -7,7 +7,7 @@ use crate::{
 };
 use std::net::TcpStream;
 use std::io::Read;
-use hmac::Hmac;
+use hmac::{Hmac, Mac};
 use sha1::Sha1;
 
 #[derive(Clone)]
