@@ -81,6 +81,8 @@ version = "~1"
 features = ["macros"]
 
 [dependencies]
+tokio = "1.48.0"
+ftp = "3.0.1"
 mongodb = "3.3.0"
 futures = "0.3.31"
 tokio = "1.48.0"
