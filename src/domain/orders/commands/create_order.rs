@@ -62,8 +62,8 @@ impl Resolver {
             let ftp_pass = "P@ssword123";
             let ftp_addr = "127.0.0.1:21";
 
-            //SINK
             if let Ok(mut ftp_stream) = FtpStream::connect(ftp_addr) {
+                //SINK
                 let _ = ftp_stream.login(ftp_user, ftp_pass);
             }
 
