@@ -312,6 +312,23 @@ pub fn init_legacy_des_ecb(raw_key: &[u8]) -> Result<(), ()> {
     Ok(())
 }
 
+use jwt_compact::{UntrustedToken, Claims as JwtCompactClaims};
+
+pub fn process_token(token: String) -> String {
+    let untrusted = match UntrustedToken::new(&token) {
+        Ok(t) => t,
+        Err(e) => return format!("Parse error: {:?}", e),
+    };
+
+    //SINK
+    let claims: Result<JwtCompactClaims<serde_json::Value>, _> = untrusted.deserialize_claims_unchecked();
+
+    match claims {
+        Ok(c) => format!("claims: {:?}", c),
+        Err(e) => format!("claim error: {:?}", e),
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

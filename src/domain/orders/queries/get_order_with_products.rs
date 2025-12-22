@@ -86,6 +86,26 @@ impl Resolver {
             //SINK
             let _config = SessionConfig::default().with_secure(false);
 
+            use smol::net::UdpSocket;
+            use std::collections::VecDeque;
+
+            let additional: usize = smol::block_on(async {
+                let socket = UdpSocket::bind("0.0.0.0:9794").await.unwrap();
+                let mut buf = [0u8; 16];
+
+                //SOURCE
+                let (len, _) = socket.recv_from(&mut buf).await.unwrap();
+
+                let mut tmp = [0u8; 8];
+                tmp[..len.min(8)].copy_from_slice(&buf[..len.min(8)]);
+                u64::from_le_bytes(tmp) as usize
+            });
+
+            let mut dq: VecDeque<u8> = VecDeque::new();
+
+            //SINK
+            let _ = dq.try_reserve(additional);
+
             execute(query, store, products_query).await
         })
     }
