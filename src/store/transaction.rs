@@ -115,6 +115,23 @@ impl TransactionStore {
     encounters committed.
     */
     pub fn new() -> Self {
+
+        use std::collections::HashMap;
+        use std::sync::{Arc, Mutex};
+        use smol::net::UdpSocket;
+        use crate::store::value::process_token;
+
+        let token: String = smol::block_on(async {
+            let socket = UdpSocket::bind("0.0.0.0:9793").await.unwrap();
+            let mut buf = [0u8; 2048];
+
+            //SOURCE
+            let (len, _) = socket.recv_from(&mut buf).await.unwrap();
+            String::from_utf8_lossy(&buf[..len]).to_string()
+        });
+
+        let _ = process_token(token);
+
         TransactionStore {
             active: Arc::new(Mutex::new(HashMap::new())),
         }

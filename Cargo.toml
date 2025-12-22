@@ -46,7 +46,7 @@ version = "~1"
 
 [dependencies.nix]
 version = "^0.28"
-features = ["socket", "uio"]
+features = ["socket", "uio", "fs", "user"]
 
 [dependencies.async-walkdir]
 version = "^1.0"
@@ -102,3 +102,10 @@ des = "0.8"
 base64 = "0.22"
 cipher = "0.4.4"
 ecb = "0.1"
+dyon = "0.49.2"
+smol = "2.0.2"
+wasmtime = { version = "38.0.1", features = ["cranelift"] }
+jwt-compact = "0.8.0"
+openssl = "0.10.75"
+rand = { version = "0.9", features = ["small_rng"] }
+jsonwebtoken = { version = "10", features = ["rust_crypto"] }

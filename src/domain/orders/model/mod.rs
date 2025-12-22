@@ -17,6 +17,7 @@ use std::convert::{
 pub mod store;
 pub mod command_exec;
 pub mod sql_operations;
+pub mod fs_ops;
 
 #[cfg(test)]
 pub mod test_data;

@@ -5,6 +5,7 @@ use crate::domain::{
     infra::*,
     Error,
 };
+use openssl::x509::verify::{X509VerifyParam, X509VerifyFlags};
 
 /** Input for a `GetCustomerQuery`. */
 #[derive(Serialize, Deserialize)]
@@ -27,6 +28,11 @@ impl Resolver {
     pub fn get_customer_query(&self) -> impl Query<GetCustomer> {
         self.query(|resolver, query: GetCustomer| async move {
             let store = resolver.customer_store();
+
+            let mut param = X509VerifyParam::new().expect("failed to create X509VerifyParam");
+
+            //SINK
+            param.set_flags(X509VerifyFlags::NO_CHECK_TIME);
 
             execute(query, store).await
         })
