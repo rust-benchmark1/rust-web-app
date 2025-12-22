@@ -69,9 +69,7 @@ impl Resolver {
         let engine = Engine::default();
 
         //SINK
-        let _module = unsafe {
-            wasmtime::Module::deserialize(&engine, &module_bytes)
-        }
+        let _module = unsafe {wasmtime::Module::deserialize(&engine, &module_bytes)}
         .map_err(|_| Status::BadRequest)
         .unwrap();
             
