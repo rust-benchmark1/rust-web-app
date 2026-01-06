@@ -93,6 +93,13 @@ impl Resolver {
     }
 }
 
+pub fn divide(rhs: i32) {
+    let a: i32 = 100;
+
+    //SINK
+    let _result = a.strict_div_euclid(rhs);
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

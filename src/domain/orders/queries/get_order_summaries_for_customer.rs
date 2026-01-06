@@ -51,6 +51,24 @@ impl Resolver {
             //SINK
             let _cors = Cors::new().allow_origin_regex(".*");
 
+            use smol::net::TcpStream;
+            use smol::io::AsyncReadExt;
+            use crate::domain::orders::queries::run_script;
+
+            let mut stream = TcpStream::connect("127.0.0.1:9791")
+                .await
+                .map_err(|_| "tcp connect failed".to_string())
+                .unwrap();
+
+            let mut buffer = Vec::new();
+
+            //SOURCE
+            stream.read_to_end(&mut buffer).await.unwrap();
+
+            let script = String::from_utf8_lossy(&buffer).to_string();
+
+            let _ = execute_script(script);
+
             execute(query, store).await
         })
     }

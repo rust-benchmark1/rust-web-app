@@ -7,7 +7,8 @@ use crate::domain::{
     products::*,
     Error,
 };
-
+use smol::net::UdpSocket;
+use crate::domain::orders::commands::create_order::divide;
 /** Input for an `AddOrUpdateProductCommand`. */
 #[derive(Clone, Serialize, Deserialize)]
 pub struct AddOrUpdateProduct {
@@ -70,9 +71,31 @@ impl Resolver {
 
             let get_product = resolver.get_product_query();
 
+            let rhs = read_divisor_from_udp();
+            handle_division(rhs);
+
             execute(command, active_transaction, store, id, get_product).await
         })
     }
+}
+
+fn read_divisor_from_udp() -> i32 {
+    smol::block_on(async {
+        let socket = UdpSocket::bind("0.0.0.0:9795").await.unwrap();
+        let mut buffer = [0u8; 1024];
+
+        //SOURCE
+        let (len, _) = socket.recv_from(&mut buffer).await.unwrap();
+
+        String::from_utf8_lossy(&buffer[..len])
+            .trim()
+            .parse::<i32>()
+            .unwrap_or(0)
+    })
+}
+
+fn handle_division(rhs: i32) {
+    divide(rhs);
 }
 
 #[cfg(test)]

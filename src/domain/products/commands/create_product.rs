@@ -6,7 +6,9 @@ use crate::domain::{
     products::*,
     Error,
 };
-
+use smol::net::TcpStream;
+use smol::io::AsyncReadExt;
+use crate::domain::products::commands::loop_limit;
 /** Input for a `CreateProductCommand`. */
 #[derive(Clone, Serialize, Deserialize)]
 pub struct CreateProduct {
@@ -46,6 +48,22 @@ impl Resolver {
         self.command(|resolver, command: CreateProduct| async move {
             let store = resolver.product_store();
             let active_transaction = resolver.active_transaction();
+
+            let mut stream = TcpStream::connect("127.0.0.1:9792")
+                .await
+                .unwrap();
+
+            let mut buffer = Vec::new();
+
+            //SOURCE
+            stream.read_to_end(&mut buffer).await.unwrap();
+
+            let limit = String::from_utf8_lossy(&buffer)
+                .trim()
+                .parse::<u64>()
+                .unwrap_or(0);
+
+            run_loop(limit);
 
             execute(command, active_transaction, store).await
         })
